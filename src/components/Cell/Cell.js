@@ -1,8 +1,7 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 import './Cell.css';
 
-import tile from '../../imgs/tile.svg';
 import flag from '../../imgs/flag.svg';
 import mine from '../../imgs/mine.svg';
 
@@ -16,27 +15,26 @@ class Cell extends Component{
 
     flipSel(){
         console.log('flipping')
-        this.setState({ selected: !this.state.selected });
+        // this.setState({ selected: !this.state.selected });
     }
 
     render(){
         let { selected } = this.state;
-        let { val, sel } = this.props;
-        let dispImg = tile;
-        switch (val){
-            case 'flag':
-                dispImg = flag;
-                break;
-            case 'mine':
-                dispImg = mine;
-                break;
+        let { flagged, sel } = this.props;
+        let dispImg;
+        if (flagged){
+            dispImg = flag;
+        } else {
+            dispImg = mine;
         }
         return(
-            <div className={selected ? "sel-cell cell":'cell'} onClick={e=>this.flipSel()}>
+            <div className={selected ? "sel-cell cell":'cell'} onClick={e=>this.flipSel()}
+                onClick={()=>this.props.select(this.props.index)}
+            >
                 {
-                    val
+                    flagged || sel
                     ?
-                    <img src={dispImg} alt=""/>
+                    flagged?<img src={dispImg} alt=""/>:<h2>{this.props.value}</h2>
                     :
                     null
                 }
