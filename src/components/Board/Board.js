@@ -13,7 +13,8 @@ class Board extends Component{
             gameStarted: false,
             selected: [],
             flagged: [],
-            game: []
+            game: [],
+            mines: []
         }
         this.selectCell = this.selectCell.bind(this);
         this.flagCell = this.flagCell.bind(this);
@@ -21,7 +22,8 @@ class Board extends Component{
 
     startGame(cb) {
         let board = genBoard(9,9,10);
-        this.setState({ game: board, gameStarted: true }, ()=>cb());
+        let mines = board.filter((c)=>c===9);
+        this.setState({ game: board, gameStarted: true, mines }, ()=>cb());
     }
 
     selectCell(i){
@@ -47,7 +49,9 @@ class Board extends Component{
                 if (!temp.includes(i)){
                     temp.push(i)
                 }
-                this.setState({ selected: temp });
+                this.setState({ selected: temp }, ()=>{
+                    this.checkGameStatus()
+                });
             }
         }
     }
@@ -71,6 +75,17 @@ class Board extends Component{
                 temp.push(i);
             }
             this.setState({ flagged: temp  });
+        }
+    }
+
+    checkGameStatus(){
+        console.log('checking for win')
+        let { game, mines, selected} = this.state;
+        let b = game.length;
+        let m = mines.length;
+        let s = selected.length;
+        if ( b === (m + s) ){
+            alert('you win')
         }
     }
 
