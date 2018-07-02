@@ -1,4 +1,4 @@
-export function genBoard(xIn, yIn, m) {
+export function genBoard(xIn, yIn, m, start) {
     let area = xIn * yIn;
     let arr = new Array(area).fill(0)
     let mines = m || area/10;
@@ -8,6 +8,14 @@ export function genBoard(xIn, yIn, m) {
             n = (~~(Math.random() * area) )
         } while (arr[n] === 9);
         arr[n] = 9;
+    }
+
+    if (arr[start] === 9){
+        let safe = arr.map((c,i)=>`${i}`).filter(c=>c!==9);
+        let rand = (~~(Math.random() * safe.length) + 0)
+        let newIndex = safe[rand] * 1
+        arr[newIndex] = 9
+        arr[start] = 0
     }
 
     for (let a = 0; a < arr.length; a++){
