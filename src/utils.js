@@ -54,7 +54,6 @@ export function getSurrounding(a, w, h) {
     for (let i = -1; i < 2; i++){
         for (let j = -1; j < 2; j++){
             let c = coordToIndex(x + i, y + j, w, h)
-            // console.log(c)
             if ( c !== a && c >= 0){
                 out.push(c)
             }

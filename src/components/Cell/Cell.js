@@ -14,8 +14,7 @@ class Cell extends Component{
     }
 
     flipSel(){
-        console.log('flipping')
-        // this.setState({ selected: !this.state.selected });
+        this.setState({ selected: !this.state.selected });
     }
 
     render(){

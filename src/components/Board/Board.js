@@ -54,12 +54,8 @@ class Board extends Component{
 
     processZero(i){
         let { game, selected } = this.state;
-        let arr = [];
-        console.log(game)
         let x = chainReact(i, game);
-        console.log(x)
         let out = x.concat(selected).filter((c,i,a)=>!a.slice(i+1).includes(c))
-        console.log(out)
         this.setState({ selected: out });
     }
 
