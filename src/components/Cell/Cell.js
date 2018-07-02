@@ -20,7 +20,7 @@ class Cell extends Component{
 
     render(){
         let { selected } = this.state;
-        let { flagged, sel } = this.props;
+        let { flagged, sel, value } = this.props;
         let dispImg;
         if (flagged){
             dispImg = flag;
@@ -28,13 +28,14 @@ class Cell extends Component{
             dispImg = mine;
         }
         return(
-            <div className={selected ? "sel-cell cell":'cell'} onClick={e=>this.flipSel()}
+            <div className={selected ? "sel-cell cell":'cell'}
                 onClick={()=>this.props.select(this.props.index)}
+                onContextMenu={(e)=>this.props.flagCell(e, this.props.index)}
             >
                 {
                     flagged || sel
                     ?
-                    flagged?<img src={dispImg} alt=""/>:<h2>{this.props.value}</h2>
+                    flagged?<img src={dispImg} alt=""/>:<h1 className={`num_${value}`} >{value}</h1>
                     :
                     null
                 }
