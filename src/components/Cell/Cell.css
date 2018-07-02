@@ -1,4 +1,4 @@
-.cell{
+.blank-cell{
     background-image: url('../../imgs/tile.svg');
     border: 1px solid gray;
     height: 100%;
@@ -6,6 +6,11 @@
     background-size: cover;
     justify-items: center;
     align-items: center;
+}
+
+.clicked-cell{
+    background-color: #CCC;
+    border: 1px solid #999;
 }
 
 .sel-cell{
@@ -43,4 +48,7 @@
 }
 .num_1{
     color: blue;
+}
+.cell h1{
+    font-size: 35px;
 }
