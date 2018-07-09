@@ -6,3 +6,18 @@
     grid-template-columns: repeat(9, 90px);
     grid-template-rows: repeat(9, 90px);
 }
+
+.game-info{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.game-setup{
+    display: flex;
+    justify-content: space-around;
+}
+
+.input-group input{
+    margin-left: 5px;
+}

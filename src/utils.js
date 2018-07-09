@@ -1,19 +1,35 @@
+Array.prototype.shuffle = function(){
+    let i = 0, j = 0, temp = null;
+    for (i = this.length - 1; i > 0; i -= 1) {
+        j = Math.floor(Math.random() * (i + 1))
+        temp = this[i];
+        this[i] = this[j];
+        this[j] = temp;
+    }
+    return this;
+}
+
 export function genBoard(xIn, yIn, m, start) {
     let area = xIn * yIn;
     let arr = new Array(area).fill(0)
-    let mines = m || area/10;
-    for (let i = 0; i < Math.ceil(mines); i++){
-        let n;
-        do {
-            n = (~~(Math.random() * area) )
-        } while (arr[n] === 9);
-        arr[n] = 9;
+    let mines = m || Math.ceil(area/10);
+    let mineList = []
+    let indexes = arr.map((c,i)=>i).shuffle();
+    for (let i = 0; i < mines; i++){
+        mineList.push(indexes.pop())
     }
 
+    mineList.forEach(m => arr[m] = 9);
+
     if (arr[start] === 9){
-        let safe = arr.map((c,i)=>`${i}`).filter(c=>c!==9);
+        let safe = [];
+        arr.forEach((c,i)=>{
+            if (c !== 9){
+                safe.push(i)
+            }
+        })
         let rand = (~~(Math.random() * safe.length) + 0)
-        let newIndex = safe[rand] * 1
+        let newIndex = safe[rand]
         arr[newIndex] = 9
         arr[start] = 0
     }
@@ -21,12 +37,10 @@ export function genBoard(xIn, yIn, m, start) {
     for (let a = 0; a < arr.length; a++){
         let {x, y} = indexToCoord(a, xIn);
         let sum = 0
-        // console.log(arr[a])
         if (arr[a] !== 9){
             for (let i = -1; i < 2; i++){
                 for (let j = -1; j < 2; j++){
                     let c = arr[coordToIndex(x + i, y + j, xIn)]
-                    // console.log(c)
                     if ( c === 9){
                         sum++;
                     }
@@ -39,7 +53,6 @@ export function genBoard(xIn, yIn, m, start) {
 }
 
 export function indexToCoord(ind, w) {
-    // console.log(ind, w)
     let i = ind + 1;
     let col = i % w || w;
     let row = Math.ceil(i / w);
@@ -70,22 +83,22 @@ export function getSurrounding(a, w, h) {
     return out;
 }
 
-export function chainReact(i, game, previous) {
+// recursive chain reaction for selecting all zero adjacent cells
+export function chainReact(i, game, rows, cols, previous) {
+    // console.log(typeof previous, previous)
     if (!previous){
-        previous = [i]
-    } else {
-        previous.push(i)
+        previous = []
     }
+    previous.push(i)
     let t = [i]
-    t = t.concat(getSurrounding(i, 9, 9));
+    t = t.concat(getSurrounding(i, cols, rows));
     let zeros = t.filter(c=>game[c]===0 && !previous.includes(c))
     for (let j = 0; j < zeros.length; j++){
-        let res = chainReact(zeros[j], game, previous)
+        let res = chainReact(zeros[j], game, rows, cols, previous)
         t = t.concat(res)
     }
     let out = t.filter((c,i)=>!t.slice(i+1).includes(c))
     return out
 }
-
 
 // TODO: make this into a class
